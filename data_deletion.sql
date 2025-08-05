@@ -1,14 +1,14 @@
-delete
-from grades;
+DELETE
+FROM grades;
 
-delete
-from groups;
+DELETE
+FROM groups;
 
-delete
-from students;
+DELETE
+FROM students;
 
-delete
-from subjects;
+DELETE
+FROM subjects;
 
-delete
-from teachers;
+DELETE
+FROM teachers;

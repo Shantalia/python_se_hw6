@@ -53,3 +53,4 @@ CREATE TABLE IF NOT EXISTS grades (
 ''')
 
 conn.commit()
+conn.close()
