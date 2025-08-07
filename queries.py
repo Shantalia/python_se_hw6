@@ -32,4 +32,10 @@ for subject in subjects:
         GROUP BY g.name;
     ''', (subject[0],))
 
+# Знайти середній бал на потоці (по всій таблиці оцінок).
+cursor.execute('''
+    SELECT AVG(grade) as avg_grade
+    FROM grades;
+''')
+
 conn.close()
