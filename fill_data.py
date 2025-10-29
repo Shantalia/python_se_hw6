@@ -1,4 +1,4 @@
-from connector import cursor, conn
+from sqlite3_connector import cursor, conn
 from faker import Faker
 import random
 

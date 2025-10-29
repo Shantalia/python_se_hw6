@@ -1,34 +1,6 @@
-from connector import conn, cursor
+from sqlite3_connector import cursor
+from queries import read_query
 
-# Таблиця студентів
-cursor.execute('''
-    DELETE
-    FROM students;
-''')
-
-# Таблиця груп
-cursor.execute('''
-    DELETE
-    FROM groups;
-''')
-
-# Таблиця викладачів
-cursor.execute('''
-    DELETE
-    FROM teachers;
-''')
-
-# Таблиця предметів
-cursor.execute('''
-    DELETE
-    FROM subjects;
-''')
-
-# Таблиця оцінок
-cursor.execute('''
-    DELETE
-    FROM grades;
-''')
-
-conn.commit()
-conn.close()
+# Всі таблиці
+query_for_data_deletion = read_query('data_deletion.sql')
+cursor.execute(query_for_data_deletion)

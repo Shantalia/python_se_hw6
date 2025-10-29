@@ -1,4 +1,4 @@
-from connector import conn, cursor
+from sqlite3_connector import conn, cursor
 
 
 # Таблиця студентів

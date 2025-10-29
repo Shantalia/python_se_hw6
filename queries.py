@@ -1,41 +1,58 @@
-from connector import conn, cursor
+from idlelib import query
+from sqlite3 import DatabaseError
+from sqlite3_connector import conn
+import logging
 
-# Знайти 5 студентів із найбільшим середнім балом з усіх предметів.
-cursor.execute('''
-    SELECT student_id, AVG(grade) as avg_grade
-    FROM grades
-    GROUP BY student_id
-    ORDER BY avg_grade DESC
-    LIMIT 5;
-''')
+example_teacher_id = 5
+example_student_id = 18
+example_group_id = 1
+example_subject_id = 3
+example_grade_id = 7
 
-# Знайти студента із найвищим середнім балом з певного предмета.
-subjects = cursor.fetchall()
-for subject in subjects:
-    cursor.execute('''
-        SELECT student_id, AVG(grade) as avg_grade
-        FROM grades
-        WHERE subject_id = ?
-        GROUP BY student_id
-        ORDER BY avg_grade DESC
-        LIMIT 1;
-    ''', (subject[0],))
+def read_query(query_file):
+    with open(query_file, 'r') as query:
+        return query.read()
 
-# Знайти середній бал у групах з певного предмета.
-for subject in subjects:
-    cursor.execute('''
-        SELECT g.name, AVG(gr.grade) as avg_grade
-       FROM grades gr
-        JOIN students s ON gr.student_id = s.id
-        JOIN groups g ON s.group_id = g.id
-        WHERE gr.subject_id = ?
-        GROUP BY g.name;
-    ''', (subject[0],))
 
-# Знайти середній бал на потоці (по всій таблиці оцінок).
-cursor.execute('''
-    SELECT AVG(grade) as avg_grade
-    FROM grades;
-''')
+try:
+    if conn is not None:
+        c = conn.cursor()
 
-conn.close()
+        query_1 = read_query('query_1.sql')
+        print(f"1) {c.execute(query_1).fetchall()} \n")
+
+        query_2 = read_query('query_2.sql')
+        print(f"2) {c.execute(query_2, (example_subject_id, )).fetchone()} \n")
+
+        query_3 = read_query('query_3.sql')
+        print(f"3) {c.execute(query_3, (example_subject_id, )).fetchall()} \n")
+
+        query_4 = read_query('query_4.sql')
+        print(f"4) {c.execute(query_4).fetchone()} \n")
+
+        query_5 = read_query('query_5.sql')
+        print(f"5) {c.execute(query_5, (example_teacher_id, )).fetchall()} \n")
+
+        query_6 = read_query('query_6.sql')
+        print(f"6) {c.execute(query_6, (example_group_id, )).fetchall()} \n")
+
+        query_7 = read_query('query_7.sql')
+        print(f"7) {c.execute(query_7, (example_group_id, example_subject_id, )).fetchall()} \n")
+
+        query_8 = read_query('query_8.sql')
+        print(f"8) {c.execute(query_8, (example_teacher_id, )).fetchone()} \n")
+
+        query_9 = read_query('query_9.sql')
+        print(f"9) {c.execute(query_9, (example_student_id,)).fetchall()} \n")
+
+        query_10 = read_query('query_10.sql')
+        print(f"10) {c.execute(query_10, (example_student_id, example_teacher_id, )).fetchall()} \n")
+
+
+
+except DatabaseError as err:
+    logging.error(err)
+except RuntimeError as err:
+    logging.error(err)
+except Exception as err:
+    logging.error(err)
