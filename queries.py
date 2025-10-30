@@ -1,11 +1,10 @@
-from idlelib import query
 from sqlite3 import DatabaseError
 from sqlite3_connector import conn
 import logging
 
 example_teacher_id = 5
 example_student_id = 18
-example_group_id = 1
+example_group_id = 2
 example_subject_id = 3
 example_grade_id = 7
 
@@ -48,6 +47,11 @@ try:
         query_10 = read_query('query_10.sql')
         print(f"10) {c.execute(query_10, (example_student_id, example_teacher_id, )).fetchall()} \n")
 
+        query_11 = read_query('query_11.sql')
+        print(f"11) {c.execute(query_11, (example_teacher_id, example_student_id,)).fetchone()} \n")
+
+        query_12 = read_query('query_12.sql')
+        print(f"12) {c.execute(query_12, (example_subject_id, example_group_id, )).fetchall()} \n")
 
 
 except DatabaseError as err:
@@ -56,3 +60,4 @@ except RuntimeError as err:
     logging.error(err)
 except Exception as err:
     logging.error(err)
+finally: conn.close()
